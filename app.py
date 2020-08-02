@@ -28,7 +28,7 @@ class Item(Resource):
 
     def post(self, name):
         if next(filter(lambda x: x['name'] == name, items), None) is not None:
-            return {'message': f'An item with the name {name} already exist'}, 400
+            return {'message': 'An item with the name {name} already exist'}, 400
 
         data = Item.parser.parse_args()
 
