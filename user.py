@@ -59,8 +59,8 @@ class UserRegister(Resource):
         data = UserRegister.parser.parse_args()
 
         if User.find_by_username(data['username']):
-            return {"message": "A user with that name already exists"}, 400 
-        
+            return {"message": "A user with that name already exists"}, 400
+
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
@@ -68,6 +68,6 @@ class UserRegister(Resource):
         cursor.execute(query, (data['username'], data['password']))
 
         connection.commit()
-        connection.close
+        connection.close()
 
         return {'message': 'User created successfully'}, 201
