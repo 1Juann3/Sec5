@@ -3,7 +3,6 @@ from flask_restful import Resource, reqparse
 
 
 class User:
-
     def __init__(self, _id, username, password):
         self.id = _id
         self.username = username
@@ -33,6 +32,7 @@ class User:
         query = "SELECT * FROM users WHERE id=?"
         result = cursor.execute(query, (_id,))
         row = result.fetchone()
+
         if row:
             user = cls(*row)
         else:
@@ -43,23 +43,23 @@ class User:
 
 
 class UserRegister(Resource):
+
     parser = reqparse.RequestParser()
     parser.add_argument('username',
-                        type=str,
+                        type = str,
                         required=True,
                         help="This field cannot be left blank!"
                         )
     parser.add_argument('password',
-                        type=str,
+                        type = str,
                         required=True,
                         help="This field cannot be left blank!"
                         )
-
     def post(self):
         data = UserRegister.parser.parse_args()
 
         if User.find_by_username(data['username']):
-            return {"message": "A user with that name already exists"}, 400
+            return {"message": "User with that username already exists."}, 400
 
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
@@ -70,4 +70,4 @@ class UserRegister(Resource):
         connection.commit()
         connection.close()
 
-        return {'message': 'User created successfully'}, 201
+        return {"message":"User created succesfully."}, 201
